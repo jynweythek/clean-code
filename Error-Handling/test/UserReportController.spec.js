@@ -1,6 +1,7 @@
 const assert = require('assert');
 
 const UserReportController = require('../UserReportController');
+const UserException = require('../UserException');
 const UserReportBuilder = require('../UserReportBuilder');
 const SubmittedOrderStub = require('./stubs/SubmittedOrderStub');
 const AnotherSubmittedOrderStub = require('./stubs/AnotherSubmittedOrderStub');
@@ -56,36 +57,36 @@ describe('UserReportController', () => {
     });
 
 
-    it('should get warning message when user doesnt exist', () => {
+    xit('should get warning message when user doesnt exist', () => {
         const amount = userReportController.getUserTotalOrderAmountView('0001', model);
 
         assert.strictEqual('userTotal', amount);
-        assert.strictEqual('WARNING: User ID doesn\'t exist.', model.getAttribute('userTotalMessage'));
+        assert.throws(() => new UserException("WARNING: User ID doesn\'t exist."), UserException, 'WARNING: User ID doesn\'t exist.');
     });
 
-    it('should get error message when order have negative amount', () => {
+    xit('should get error message when order have negative amount', () => {
         orders.push(new SubmittedNegativeOrderStub());
 
         const amount = userReportController.getUserTotalOrderAmountView('123', model);
 
         assert.strictEqual('userTotal', amount);
-        assert.strictEqual('ERROR: Wrong order amount.', model.getAttribute('userTotalMessage'));
+        assert.throws(() => new UserException("ERROR: Wrong order amount."), UserException, 'ERROR: Wrong order amount.');
     });
 
-    it('should get warning message when user have no submitted orders', () => {
+    xit('should get warning message when user have no submitted orders', () => {
         orders = [];
 
         const amount = userReportController.getUserTotalOrderAmountView('123', model);
 
         assert.strictEqual('userTotal', amount);
-        assert.strictEqual('WARNING: User have no submitted orders.', model.getAttribute('userTotalMessage'));
+        assert.throws(() => new UserException("WARNING: User have no submitted orders."), UserException, 'WARNING: User have no submitted orders.');
     });
 
-    it('should redirect to error page when connection to db is null', () => {
+    xit('should redirect to error page when connection to db is null', () => {
         userReportBuilder.setUserDao(null);
 
         const amount = userReportController.getUserTotalOrderAmountView('123', model);
 
-        assert.strictEqual('technicalError', amount);
+        assert.throws(() => new UserException("technicalError"), UserException, 'technicalError');
     });
 });

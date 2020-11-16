@@ -24,7 +24,7 @@ module.exports = class UserReportBuilder {
                     return -3;
                 sum += total;
             }
-        };
+        }
 
         return sum;
     }

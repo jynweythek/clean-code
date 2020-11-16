@@ -1,40 +1,20 @@
 module.exports = class AccountDetails {
-    constructor(birth, startDate, balance, age) {
-        this.birth = birth;
-        this.startDate = startDate;
-        this.balance = balance;
-        this.age = age;
+    constructor(details) {
+        for (let prop in details) {
+            if (details.hasOwnProperty(prop)) {
+                this[prop] = details[prop];
+            }
+        }
     }
 
-    getBirth() {
-        return this.birth;
+    getSetDetail(prop, value) {
+        if (arguments.length > 1) {
+            this[prop] = value;
+        }
+        return this[prop];
     }
 
-    setBirth(birth) {
-        this.birth = birth;
+    doubleValue() {
+        return this * 2;
     }
-
-    getStartDate() {
-        return this.startDate;
-    }
-
-    setStartDate(startDate) {
-        this.startDate = startDate;
-    }
-
-    getBalance() {
-        return this.balance;
-    }
-
-    setBalance(balance) {
-        this.balance = balance;
-    }
-
-    getAge() {
-        return this.age;
-    }
-
-    setAge(age) {
-        this.age = age;
-    }
-};
+}

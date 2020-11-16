@@ -1,23 +1,28 @@
-const { msg } = require('./lib/constants');
+const { message } = require('./lib/constants');
+
+const notificationLevel = {
+    'info': 4,
+    'critical': 1
+}
 
 module.exports = class CollectOrderService {
-    constructor(arg1, arg2) {
-        this.ser1 = arg1;
-        this.ser2 = arg2;
+    constructor(readiness, notifier) {
+        this.orderReadiness = readiness;
+        this.orderNotifier = notifier;
     }
 
-    submitOrder(pOrder) {
-        if (this.ser1.isEligibleForCollection(pOrder))
-            this.ser2.notifyCustomer(msg.READY_FOR_COLLECT, 4); // 4 - info notification level
+    submitOrder(order) {
+        if (this.orderReadiness.isEligibleForCollection(order))
+            this.orderNotifier.notifyCustomer(message.READY_FOR_COLLECT, notificationLevel.info);
         else
-            this.ser2.notifyCustomer(msg.IMPOSSIBLE_TO_COLLECT, 1); // 1 - critical notification level
+            this.orderNotifier.notifyCustomer(message.IMPOSSIBLE_TO_COLLECT, notificationLevel.critical);
     }
 
-    setSer1(ser1) {
-        this.ser1 = ser1;
+    setReadiness(orderReadiness) {
+        this.orderReadiness = orderReadiness;
     }
 
-    setSer2(ser2) {
-        this.ser2 = ser2;
+    setNotifier(orderNotifier) {
+        this.orderNotifier = orderNotifier;
     }
 };

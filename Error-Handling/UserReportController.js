@@ -1,3 +1,5 @@
+const UserException = require('./UserException.js');
+
 module.exports = class UserReportController {
     constructor() {
         this.userReportBuilder = null;
@@ -5,9 +7,9 @@ module.exports = class UserReportController {
 
     getUserTotalOrderAmountView(userId, model) {
         const totalMessage = this.getUserTotalMessage(userId);
-        if (totalMessage === null)
-            return 'technicalError';
-
+        if (!totalMessage) {
+            throw new UserException('technicalError')
+        }
         model.addAttribute('userTotalMessage', totalMessage);
 
         return 'userTotal';
@@ -20,11 +22,11 @@ module.exports = class UserReportController {
             return null;
 
         if (amount === -1)
-            return 'WARNING: User ID doesn\'t exist.';
+            throw new UserException('WARNING: User ID doesn\'t exist.')
         if (amount === -2)
-            return 'WARNING: User have no submitted orders.';
+            throw new UserException('WARNING: User have no submitted orders.')
         if (amount === -3)
-            return 'ERROR: Wrong order amount.';
+            throw new UserException('ERROR: Wrong order amount.')
 
         return `User Total: ${amount}$`;
     }
