@@ -9,16 +9,26 @@ module.exports = class SitePage {
     }
 
     getEditablePageUrl(params) {
-        let paramsString = '';
-
-        for (const [key, value] of params) {
-            paramsString += '&' + key + '=' + value;
-        }
-
-        return HTTP + DOMAIN + EDITABLE + paramsString + this.getAttributes();
+        return this.getBaseUrl() + this.getParamsString(params) + this.getGroups();
     }
 
-    getAttributes() {
+    getBaseUrl() {
+        return HTTP + DOMAIN + EDITABLE;
+    }
+
+    getParamsString(params) {
+        let paramsString = '';
+
+        if(params) {
+            for (const [key, value] of params) {
+                paramsString += '&' + key + '=' + value;
+            }
+        }
+
+        return paramsString;
+    }
+
+    getGroups() {
         return '&siteGrp=' + this.siteGroup + '&userGrp=' + this.userGroup;
     }
 };

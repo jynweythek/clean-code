@@ -11,7 +11,7 @@ const authenticator = {
             sessionManager.setCurrentUser(user);
             return user;
         }
-        return null;
+        throw new Error('Logging in can not be performed.')
     },
 };
 

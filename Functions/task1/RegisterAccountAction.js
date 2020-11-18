@@ -17,13 +17,7 @@ module.exports = class RegisterAccountAction {
                 throw new WrongPasswordException();
             }
         }
-
-        account.setCreatedDate(new Date());
-        const addresses = new Set();
-        addresses.add(account.getHomeAddress());
-        addresses.add(account.getWorkAddress());
-        addresses.add(account.getAdditionalAddress());
-        account.setAddresses(addresses);
+        this.accountManager.setCreatedDate(account);
         this.accountManager.createNewAccount(account);
     }
 
@@ -33,5 +27,11 @@ module.exports = class RegisterAccountAction {
 
     setPasswordChecker(passwordChecker) {
         this.passwordChecker = passwordChecker;
+    }
+
+    setAddresses(account, addresses) {
+        addresses.add(account.getHomeAddress());
+        addresses.add(account.getWorkAddress());
+        addresses.add(account.getAdditionalAddress());
     }
 };
